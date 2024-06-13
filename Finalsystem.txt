@@ -1,0 +1,84 @@
+package com.mycompany.srs1;
+
+import java.util.Scanner;
+
+class Vehicle {
+    String type;
+    String color;
+    int speed;
+
+    public Vehicle(String type, String color, int speed) {
+        this.type = type;
+        this.color = color;
+        this.speed = speed;
+    }
+}
+
+class VehicleDetector {
+    public static boolean isVehicleDetected() {
+        return Math.random() > 0.5;
+    }
+}
+
+public class SRS1 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int totalVehicles = 0;
+        Vehicle[] vehicles = new Vehicle[100]; // Array to store vehicle objects
+        int speedLimit = 60; // Speed limit in mph
+
+        System.out.println("Welcome to Vehicle Counter!");
+        System.out.println("Enter 'in' when a vehicle enters, 'out' when a vehicle exits, or 'exit' to quit.");
+
+        while (true) {
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("in")) {
+                if (VehicleDetector.isVehicleDetected()) {
+                    System.out.println("Enter vehicle type (car, truck, motorcycle): ");
+                    String type = scanner.nextLine();
+                    System.out.println("Enter vehicle color: ");
+                    String color = scanner.nextLine();
+                    System.out.println("Enter vehicle speed (mph): ");
+                    int speed = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline left-over
+
+                    if (speed > speedLimit) {
+                        System.out.println("Speed limit violation! Vehicle speed: " + speed + " mph");
+                    }
+
+                    Vehicle vehicle = new Vehicle(type, color, speed);
+                    vehicles[totalVehicles] = vehicle;
+                    totalVehicles++;
+
+                    if (totalVehicles == 1) {
+                        System.out.println("One vehicle entered. Total vehicles: " + totalVehicles);
+                    } else {
+                        System.out.println(totalVehicles + " vehicles entered. Total vehicles: " + totalVehicles);
+                    }
+                } else {
+                    System.out.println("No vehicle detected.");
+                }
+            } else if (input.equalsIgnoreCase("out")) {
+                if (totalVehicles > 0) {
+                    totalVehicles--;
+                    if (totalVehicles == 1) {
+                        System.out.println("One vehicle exited. Total vehicles: " + totalVehicles);
+                    } else {
+                        System.out.println(totalVehicles + " vehicles exited. Total vehicles: " + totalVehicles);
+                    }
+                } else {
+                    System.out.println("No vehicles to exit.");
+                }
+            } else if (input.equalsIgnoreCase("exit")) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'in', 'out', or 'exit'.");
+            }
+        }
+
+        System.out.println("Exiting Vehicle Counter. Total vehicles counted: " + totalVehicles);
+        scanner.close();
+    }
+}
+
